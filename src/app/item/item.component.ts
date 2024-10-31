@@ -1,4 +1,5 @@
-import { Component, Input, Output } from '@angular/core';
+import { ItemsService } from './../items.service';
+import { Component, input, Input, Output } from '@angular/core';
 import { Items } from '../item.model';
 
 @Component({
@@ -8,7 +9,9 @@ import { Items } from '../item.model';
 })
 export class ItemComponent {
   @Input() item: Items;
-  removeItem(item) {
-    console.log(item);
+  @Input() itemIndex: number;
+  constructor(private ItemsService: ItemsService) {}
+  onDeleteItem() {
+    this.ItemsService.deleteItem(this.itemIndex);
   }
 }

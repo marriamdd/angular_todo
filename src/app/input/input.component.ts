@@ -11,7 +11,10 @@ export class InputComponent implements OnInit {
   ngOnInit(): void {}
   onNewItem(input: HTMLInputElement) {
     console.log(input.value);
-    this.ItemsService.addItem(input.value);
+    if (input.value.length > 0) {
+      this.ItemsService.addItem(input.value.trim());
+    }
+
     input.value = '';
   }
 }

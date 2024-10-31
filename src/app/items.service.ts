@@ -10,4 +10,7 @@ export class ItemsService {
   addItem(newDesc: string) {
     this.items.unshift({ description: newDesc, done: false });
   }
+  deleteItem(index: number) {
+    this.items.splice(index, 1);
+  }
 }
