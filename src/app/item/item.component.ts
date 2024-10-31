@@ -14,4 +14,7 @@ export class ItemComponent {
   onDeleteItem() {
     this.ItemsService.deleteItem(this.itemIndex);
   }
+  onItemDone() {
+    this.ItemsService.finishItem(this.itemIndex);
+  }
 }

@@ -1,5 +1,5 @@
-<div class="item">
-  <h4 (click)="item.done = !item.done" [ngClass]="item.done ? 'done' : ''">
+<div (click)="onItemDone()" class="item">
+  <h4 [ngClass]="item.done ? 'done' : ''">
     {{ item.description }}
   </h4>
   <button (click)="onDeleteItem()">delete</button>
