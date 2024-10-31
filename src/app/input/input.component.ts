@@ -10,7 +10,6 @@ export class InputComponent implements OnInit {
   constructor(private ItemsService: ItemsService) {}
   ngOnInit(): void {}
   onNewItem(input: HTMLInputElement) {
-    console.log(input.value);
     if (input.value.length > 0) {
       this.ItemsService.addItem(input.value.trim());
     }

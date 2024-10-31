@@ -9,12 +9,12 @@ import { Items } from '../item.model';
 })
 export class ItemComponent {
   @Input() item: Items;
-  @Input() itemIndex: number;
+
   constructor(private ItemsService: ItemsService) {}
   onDeleteItem() {
-    this.ItemsService.deleteItem(this.itemIndex);
+    this.ItemsService.deleteItem(this.item.key);
   }
   onItemDone() {
-    this.ItemsService.finishItem(this.itemIndex);
+    this.ItemsService.finishItem(this.item.key);
   }
 }
