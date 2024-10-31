@@ -13,10 +13,6 @@ export class ItemsService {
 
   constructor(private httpClient: HttpClient) {}
 
-  private saveItems() {
-    localStorage.setItem('todos', JSON.stringify(this.items));
-  }
-
   getItems(): Observable<Items[]> {
     return this.httpClient
       .get<{ [key: string]: Items }>(`${this.baseUrl}todos.json`)
@@ -25,7 +21,9 @@ export class ItemsService {
           if (response) {
             const todoArray: Items[] = [];
             for (let key in response) {
-              todoArray.unshift({ ...response[key], key });
+              if (response[key].description) {
+                todoArray.unshift({ ...response[key], key });
+              }
             }
             return todoArray;
           } else {
@@ -44,7 +42,7 @@ export class ItemsService {
       done: false,
     };
 
-    this.httpClient
+    return this.httpClient
       .post<{ name: string }>(`${this.baseUrl}todos.json`, newItem)
       .pipe(
         tap((response) => {
@@ -53,52 +51,36 @@ export class ItemsService {
             this.itemsUpdated.next(this.items);
           }
         })
-      )
-      .subscribe((response) => {
-        console.log('Item added:', response);
-      });
+      );
   }
 
   deleteItem(key: string) {
-    this.httpClient
-      .delete(`${this.baseUrl}todos/${key}.json`)
+    return this.httpClient.delete(`${this.baseUrl}todos/${key}.json`).pipe(
+      tap(() => {
+        const itemIndex = this.items.map((item) => item.key).indexOf(key);
+        this.items.splice(itemIndex, 1);
+        this.itemsUpdated.next(this.items);
+      }),
+      catchError((error) => {
+        console.error('Error deleting item', error);
+        return of(null);
+      })
+    );
+  }
+  updateItem(item: Items) {
+    return this.httpClient
+      .patch(`${this.baseUrl}todos/${item.key}.json`, {
+        description: item.description,
+        done: item.done,
+      })
       .pipe(
         tap(() => {
-          this.items = this.items.filter((item) => item.key !== key);
+          const itemIndex = this.items
+            .map((item) => item.key)
+            .indexOf(item.key);
+          this.items[itemIndex] = item;
           this.itemsUpdated.next(this.items);
-          this.saveItems();
-        }),
-        catchError((error) => {
-          console.error('Error deleting item', error);
-          return of(null);
         })
-      )
-      .subscribe((response) => {
-        console.log('Item deleted:', response);
-      });
-  }
-  finishItem(key: string) {
-    const itemIndex = this.items.findIndex((item) => item.key === key);
-    if (itemIndex === -1) {
-      console.error('Item not found');
-      return;
-    }
-
-    this.items[itemIndex].done = !this.items[itemIndex].done;
-
-    const updatedItem = { done: this.items[itemIndex].done };
-
-    this.httpClient
-      .patch(`${this.baseUrl}todos/${key}.json`, updatedItem)
-      .subscribe(
-        (response) => {
-          console.log('Item updated:', response);
-          this.itemsUpdated.next(this.items);
-          this.saveItems();
-        },
-        (error) => {
-          console.error('Error updating item', error);
-        }
       );
   }
 }

@@ -12,9 +12,14 @@ export class ItemComponent {
 
   constructor(private ItemsService: ItemsService) {}
   onDeleteItem() {
-    this.ItemsService.deleteItem(this.item.key);
+    this.ItemsService.deleteItem(this.item.key).subscribe((response) =>
+      console.log(response)
+    );
   }
   onItemDone() {
-    this.ItemsService.finishItem(this.item.key);
+    this.ItemsService.updateItem({
+      ...this.item,
+      done: !this.item.done,
+    }).subscribe();
   }
 }

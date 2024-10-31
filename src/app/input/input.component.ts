@@ -1,5 +1,5 @@
 import { ItemsService } from './../items.service';
-import { Component, EventEmitter, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-input',
@@ -11,7 +11,7 @@ export class InputComponent implements OnInit {
   ngOnInit(): void {}
   onNewItem(input: HTMLInputElement) {
     if (input.value.length > 0) {
-      this.ItemsService.addItem(input.value.trim());
+      this.ItemsService.addItem(input.value.trim()).subscribe();
     }
 
     input.value = '';
