@@ -1,3 +1,4 @@
 <div class="container">
+  <app-input (newItem)="onAddItem($event)"></app-input>
   <app-item *ngFor="let itemObj of items" [item]="itemObj"></app-item>
 </div>
