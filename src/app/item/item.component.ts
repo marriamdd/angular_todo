@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, Output } from '@angular/core';
 import { Items } from '../item.model';
 
 @Component({
@@ -8,4 +8,7 @@ import { Items } from '../item.model';
 })
 export class ItemComponent {
   @Input() item: Items;
+  removeItem(item) {
+    console.log(item);
+  }
 }

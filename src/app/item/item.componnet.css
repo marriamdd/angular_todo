@@ -17,3 +17,7 @@ button {
 button:hover {
   background-color: red;
 }
+
+.done {
+  text-decoration: line-through;
+}

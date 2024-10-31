@@ -1,4 +1,6 @@
 <div class="item">
-  <h4>{{ item.description }}</h4>
+  <h4 (click)="item.done = !item.done" [ngClass]="item.done ? 'done' : ''">
+    {{ item.description }}
+  </h4>
   <button>delete</button>
 </div>

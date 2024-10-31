@@ -1,18 +1,17 @@
-import { Component } from '@angular/core';
 import { Items } from './item.model';
+
+import { Component, OnInit } from '@angular/core';
+import { ItemsService } from './items.service';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css'],
 })
-export class AppComponent {
-  items: Items[] = [
-    { description: 'bebos davurekos', done: false },
-    { description: 'vuyuro pilms', done: false },
-    { description: 'avago aplikacia', done: true },
-  ];
-  onAddItem(newDesc: string) {
-    this.items.unshift({ description: newDesc, done: false });
+export class AppComponent implements OnInit {
+  items: Items[];
+  constructor(private ItemsService: ItemsService) {}
+  ngOnInit() {
+    this.items = this.ItemsService.items;
   }
 }
